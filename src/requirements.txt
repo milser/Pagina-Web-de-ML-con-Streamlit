@@ -20,5 +20,4 @@ streamlit
 scipy
 py7zr
 joblib
-psutil
 pathlib

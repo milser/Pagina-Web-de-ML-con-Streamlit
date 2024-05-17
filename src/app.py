@@ -5,7 +5,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from scipy.sparse import csr_matrix
 import py7zr
 import joblib
-import psutil
 import os
 import pathlib
 
@@ -87,27 +86,30 @@ def contiene_todos_los_generos(row, selected_genres):
 genres = [genre for genre in genres if isinstance(genre, str)]
 unique_genres = set()
 
+for item in genres:
+    unique_genres.update(item.split())
+unique_genres_list = list(unique_genres)
+unique_genres_list.sort()
+recommended_films = []
+
 def main():
     # Filtrar la lista de géneros para eliminar elementos que no son cadenas de texto
-    for item in genres:
-        unique_genres.update(item.split())
-    unique_genres_list = list(unique_genres)
-    unique_genres_list.sort()
-
-
+    global recommended_films
+    
     selected_genre = st.multiselect("Selecciona un género:", unique_genres_list)
     st.text('Esto filtrara las peliculas disponibles en la lista inferior')
-
-   
 
     # Aplicar la función a cada fila del DataFrame
     film_data['cumple_condicion'] = film_data.apply(lambda row: contiene_todos_los_generos(row, selected_genre), axis=1)
     peliculas_filtradas = film_data[film_data['cumple_condicion']]
-    peliculas_filtradas = peliculas_filtradas.drop(columns=['cumple_condicion'])
 
     selected_film = st.selectbox("Indica una pelicula que te guste como orientación:", peliculas_filtradas.title.values)
 
-    for string in recommend(selected_film):
+    if st.button("RECOMENDAR"):
+       recommended_films = recommend(selected_film)
+       
+    #if recommended_films:
+    for string in recommended_films:
         st.markdown(f"### {string}")
         
         
