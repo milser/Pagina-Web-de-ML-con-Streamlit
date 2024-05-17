@@ -7,12 +7,48 @@ import py7zr
 import joblib
 import multiprocessing
 
+import os
+import psutil
+import subprocess
+
 st.header('Que peli vas a ver hoy?!')
 
 nFilmsRecomended = st.slider(min_value=1,max_value=5,label='Cuantas pelis quieres que te recomiende?')
 
 #film_data = pd.read_csv(r'../data/processed/total_data_clean_procesed.csv')
 film_data = pd.read_csv(r'C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\data\processed\total_data_clean_procesed.csv')
+
+
+
+
+"""
+Descompresion
+"""
+
+# Ruta del archivo .7z
+archive_path = r"C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\models\models.7z"
+# Ruta del directorio de destino
+output_dir = r"C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\models"
+# Número de núcleos menos cuatro
+num_cores = psutil.cpu_count(logical=True) - 4
+# Asegurarse de que el número de núcleos no sea menos de 1
+num_cores = max(1, num_cores)
+
+# Configurar py7zr para usar varios hilos (actualmente py7zr no soporta multithreading directo,
+# pero lo incluimos para ilustrar cómo se podría adaptar en el futuro o si la biblioteca añade soporte)
+# Por ahora, py7zr no tiene una opción nativa para especificar el número de núcleos, se puede considerar en futuras versiones.
+
+# Extracción del archivo
+try:
+    with py7zr.SevenZipFile(archive_path, mode='r') as z:
+        z.extractall(path=output_dir)
+    print("Extracción completada con éxito.")
+except Exception as e:
+    print("Ocurrió un error durante la extracción:")
+    print(e)
+"""
+Fin descompresion
+"""
 
 # Cargar el vectorizador
 vectorizer = joblib.load(r'C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\models\vectorizer.pkl')
@@ -30,8 +66,9 @@ for item in genres:
 unique_genres_list = list(unique_genres)
 unique_genres_list.sort()
 
+
 selected_genre = st.multiselect("Selecciona un género:", unique_genres_list)
-st.text_area = "ads"
+st.text('Esto filtrara las peliculas disponibles en la lista inferior')
 
 def contiene_todos_los_generos(row, selected_genres):
     # Dividir la cadena de géneros en una lista de géneros
