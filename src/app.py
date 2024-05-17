@@ -20,11 +20,10 @@ st.header('Que peli vas a ver hoy?!')
 nFilmsRecomended = st.slider(min_value=1,max_value=5,label='Cuantas pelis quieres que te recomiende?')
 
 #film_data = pd.read_csv(r'../data/processed/total_data_clean_procesed.csv')
-film_data = pd.read_csv(r'C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\data\processed\total_data_clean_procesed.csv')
+film_data = pd.read_csv(dirname + r'\data\processed\total_data_clean_procesed.csv')
 
 
 #Descompresion
-
 
 z_file_path = dirname + '\models\models.7z'
 print("filename_path: "+z_file_path)
