@@ -6,10 +6,9 @@ from scipy.sparse import csr_matrix
 import py7zr
 import joblib
 import os
-import pathlib
 
-dirname = str(pathlib.Path(__file__).parent.parent)
 
+dirname = r'../models/similarity.pkl'
 
 print("dirname:" + dirname)
 
@@ -19,22 +18,22 @@ st.header('Que peli vas a ver hoy?!')
 nFilmsRecomended = st.slider(min_value=1,max_value=5,label='Cuantas pelis quieres que te recomiende?')
 
 #film_data = pd.read_csv(r'../data/processed/total_data_clean_procesed.csv')
-film_data = pd.read_csv(dirname + r'\data\processed\total_data_clean_procesed.csv')
+film_data = pd.read_csv('../data/processed/total_data_clean_procesed.csv')
 
 
 def decompress():
     #Descompresion
 
-    z_file_path = dirname + '\models\models.7z'
+    z_file_path = '../models/models.7z'
     print("filename_path: "+z_file_path)
     # Ruta del archivo .7z
     archive_path = z_file_path
     # Ruta del directorio de destino
-    output_dir = dirname + r'\models'
+    output_dir = '../models'
 
     # Extracción del archivo
     try:
-        with py7zr.SevenZipFile(archive_path, mode='r') as z:
+        with py7zr.SevenZipFile(archive_path) as z:
             z.extractall(path=output_dir)
         print("Extracción completada con éxito.")
     except Exception as e:
@@ -44,14 +43,14 @@ def decompress():
 
     #Fin descompresion
 
-if not os.path.exists(dirname + r'\models\vectorizer.pkl'):
+if not os.path.exists('../models/vectorizer.pkl'):
     decompress()
     
     
 # Cargar el vectorizador
-vectorizer = joblib.load(dirname + r'\models\vectorizer.pkl')
+vectorizer = joblib.load('../models/vectorizer.pkl')
 # Cargar la matriz de similitud
-similarity = joblib.load(dirname + r'\models\similarity.pkl')
+similarity = joblib.load('../models/similarity.pkl')
 
 genres = film_data.genres.values
 crews = film_data.crew.values
