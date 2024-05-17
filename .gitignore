@@ -1,3 +1,5 @@
 __pycache__
 .env
 .learn
+/models/similarity.pkl
+/models/vectorizer.pkl
