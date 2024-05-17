@@ -7,7 +7,40 @@ import py7zr
 import joblib
 import os
 
-film_data = pd.read_csv('../data/processed/total_data_clean_procesed.csv')
+film_data = pd.DataFrame()
+recommended_films = []
+similarity = None
+genres = []
+crews = []
+setup = False
+nFilmsRecomended = 0
+unique_genres = set()
+unique_genres_list = []
+
+def my_setup():
+    global setup
+    global genres
+    global crews 
+    global nFilmsRecomended
+    global unique_genres_list
+    global similarity    
+    global film_data
+    
+    if not os.path.exists('../models/similarity.pkl'): decompress()
+    film_data = pd.read_csv('../data/processed/total_data_clean_procesed.csv')
+    similarity = joblib.load('../models/similarity.pkl')
+    
+    genres = film_data.genres.values
+    crews = film_data.crew.values
+    nFilmsRecomended = 1
+    genres = [genre for genre in genres if isinstance(genre, str)]
+    
+    for item in genres:
+        unique_genres.update(item.split())
+    unique_genres_list = list(unique_genres)
+    unique_genres_list.sort()    
+        
+    setup = True
 
 def decompress():
     #Descompresion
@@ -29,19 +62,6 @@ def decompress():
         print(e)
     #Fin descompresion
 
-if not os.path.exists('../models/vectorizer.pkl'):
-    decompress()
-    
-    
-# Cargar el vectorizador
-vectorizer = joblib.load('../models/vectorizer.pkl')
-# Cargar la matriz de similitud
-similarity = joblib.load('../models/similarity.pkl')
-
-genres = film_data.genres.values
-crews = film_data.crew.values
-
-nFilmsRecomended = 1
 
 def recommend(movie):
         recomended_list = []
@@ -69,21 +89,15 @@ def contiene_todos_los_generos(row, selected_genres):
         return True
     else:
         return False 
-    
-genres = [genre for genre in genres if isinstance(genre, str)]
-unique_genres = set()
-
-for item in genres:
-    unique_genres.update(item.split())
-unique_genres_list = list(unique_genres)
-unique_genres_list.sort()
-recommended_films = []
 
 def main():
     # Filtrar la lista de géneros para eliminar elementos que no son cadenas de texto
     global recommended_films
     global nFilmsRecomended
+
     
+    if not setup: my_setup()
+       
     st.header('Que peli vas a ver hoy?!')
 
     nFilmsRecomended = st.slider(min_value=1,max_value=5,label='Cuantas pelis quieres que te recomiende?')
