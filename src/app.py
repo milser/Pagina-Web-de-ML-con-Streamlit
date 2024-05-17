@@ -22,9 +22,9 @@ nFilmsRecomended = st.slider(min_value=1,max_value=5,label='Cuantas pelis quiere
 #film_data = pd.read_csv(r'../data/processed/total_data_clean_procesed.csv')
 film_data = pd.read_csv(r'C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\data\processed\total_data_clean_procesed.csv')
 
-"""
-Descompresion
-"""
+
+#Descompresion
+
 
 z_file_path = dirname + '\models\models.7z'
 print("filename_path: "+z_file_path)
@@ -50,9 +50,9 @@ except Exception as e:
     print("Ocurrió un error durante la extracción:")
     print(e)
 
-"""
-Fin descompresion
-"""
+
+#Fin descompresion
+
 
 # Cargar el vectorizador
 vectorizer = joblib.load(r'C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\models\vectorizer.pkl')
