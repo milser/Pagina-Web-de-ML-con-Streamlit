@@ -4,4 +4,3 @@ scikit-learn
 streamlit
 py7zr
 joblib
-pathlib
