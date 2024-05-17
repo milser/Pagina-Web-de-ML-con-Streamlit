@@ -17,10 +17,7 @@ xgboost
 openpyxl
 edastatmil_milser
 streamlit
-sklearn
-sklearn.metrics.pairwise
 scipy
-scipy.sparse
 py7zr
 joblib
 psutil
