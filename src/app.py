@@ -7,19 +7,7 @@ import py7zr
 import joblib
 import os
 
-
-dirname = r'../models/similarity.pkl'
-
-print("dirname:" + dirname)
-
-
-st.header('Que peli vas a ver hoy?!')
-
-nFilmsRecomended = st.slider(min_value=1,max_value=5,label='Cuantas pelis quieres que te recomiende?')
-
-#film_data = pd.read_csv(r'../data/processed/total_data_clean_procesed.csv')
 film_data = pd.read_csv('../data/processed/total_data_clean_procesed.csv')
-
 
 def decompress():
     #Descompresion
@@ -39,8 +27,6 @@ def decompress():
     except Exception as e:
         print("Ocurrió un error durante la extracción:")
         print(e)
-
-
     #Fin descompresion
 
 if not os.path.exists('../models/vectorizer.pkl'):
@@ -54,6 +40,8 @@ similarity = joblib.load('../models/similarity.pkl')
 
 genres = film_data.genres.values
 crews = film_data.crew.values
+
+nFilmsRecomended = 1
 
 def recommend(movie):
         recomended_list = []
@@ -94,7 +82,11 @@ recommended_films = []
 def main():
     # Filtrar la lista de géneros para eliminar elementos que no son cadenas de texto
     global recommended_films
+    global nFilmsRecomended
     
+    st.header('Que peli vas a ver hoy?!')
+
+    nFilmsRecomended = st.slider(min_value=1,max_value=5,label='Cuantas pelis quieres que te recomiende?')
     selected_genre = st.multiselect("Selecciona un género:", unique_genres_list)
     st.text('Esto filtrara las peliculas disponibles en la lista inferior')
 
