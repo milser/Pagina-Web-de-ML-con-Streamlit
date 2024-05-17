@@ -32,14 +32,6 @@ def decompress():
     archive_path = z_file_path
     # Ruta del directorio de destino
     output_dir = dirname + r'\models'
-    # Número de núcleos menos cuatro
-    num_cores = psutil.cpu_count(logical=True) - 1 if psutil.cpu_count(logical=True) > 1 else 1
-    # Asegurarse de que el número de núcleos no sea menos de 1
-    num_cores = max(1, num_cores)
-
-    # Configurar py7zr para usar varios hilos (actualmente py7zr no soporta multithreading directo,
-    # pero lo incluimos para ilustrar cómo se podría adaptar en el futuro o si la biblioteca añade soporte)
-    # Por ahora, py7zr no tiene una opción nativa para especificar el número de núcleos, se puede considerar en futuras versiones.
 
     # Extracción del archivo
     try:
