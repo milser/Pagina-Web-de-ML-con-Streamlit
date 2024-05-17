@@ -22,7 +22,6 @@ nFilmsRecomended = st.slider(min_value=1,max_value=5,label='Cuantas pelis quiere
 #film_data = pd.read_csv(r'../data/processed/total_data_clean_procesed.csv')
 film_data = pd.read_csv(r'C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\data\processed\total_data_clean_procesed.csv')
 
-
 """
 Descompresion
 """
@@ -77,11 +76,24 @@ def recommend(movie):
             return recomended_list
         except Exception as e:
             print("Your movie is not in the List")
+            
+def contiene_todos_los_generos(row, selected_genres):
+    # Dividir la cadena de géneros en una lista de géneros
+    if isinstance(row['genres'], str):
+        lista_de_generos = row['genres'].split()
+        # Verificar si todos los géneros seleccionados están presentes en la lista de géneros
+        for genre in selected_genres:
+            if genre not in lista_de_generos:
+                return False
+        return True
+    else:
+        return False 
+    
+genres = [genre for genre in genres if isinstance(genre, str)]
+unique_genres = set()
 
 def main():
     # Filtrar la lista de géneros para eliminar elementos que no son cadenas de texto
-    genres = [genre for genre in genres if isinstance(genre, str)]
-    unique_genres = set()
     for item in genres:
         unique_genres.update(item.split())
     unique_genres_list = list(unique_genres)
@@ -91,17 +103,7 @@ def main():
     selected_genre = st.multiselect("Selecciona un género:", unique_genres_list)
     st.text('Esto filtrara las peliculas disponibles en la lista inferior')
 
-    def contiene_todos_los_generos(row, selected_genres):
-        # Dividir la cadena de géneros en una lista de géneros
-        if isinstance(row['genres'], str):
-            lista_de_generos = row['genres'].split()
-            # Verificar si todos los géneros seleccionados están presentes en la lista de géneros
-            for genre in selected_genres:
-                if genre not in lista_de_generos:
-                    return False
-            return True
-        else:
-            return False 
+   
 
     # Aplicar la función a cada fila del DataFrame
     film_data['cumple_condicion'] = film_data.apply(lambda row: contiene_todos_los_generos(row, selected_genre), axis=1)
