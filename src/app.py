@@ -6,6 +6,14 @@ from scipy.sparse import csr_matrix
 import py7zr
 import joblib
 import psutil
+import os
+import pathlib
+
+dirname = str(pathlib.Path(__file__).parent.parent)
+
+
+print("dirname:" + dirname)
+
 
 st.header('Que peli vas a ver hoy?!')
 
@@ -19,10 +27,12 @@ film_data = pd.read_csv(r'C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de
 Descompresion
 """
 
+z_file_path = dirname + '\models\models.7z'
+print("filename_path: "+z_file_path)
 # Ruta del archivo .7z
-archive_path = r"C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\models\models.7z"
+archive_path = z_file_path
 # Ruta del directorio de destino
-output_dir = r"C:\Users\milser\Documents\Trasteo_4geeks\Pagina-Web-de-ML-con-Streamlit\models"
+output_dir = dirname + r'\models'
 # Número de núcleos menos cuatro
 num_cores = psutil.cpu_count(logical=True) - 4
 # Asegurarse de que el número de núcleos no sea menos de 1
