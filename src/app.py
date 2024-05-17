@@ -32,7 +32,7 @@ archive_path = z_file_path
 # Ruta del directorio de destino
 output_dir = dirname + r'\models'
 # Número de núcleos menos cuatro
-num_cores = psutil.cpu_count(logical=True) - 4
+num_cores = psutil.cpu_count(logical=True) - 1 if psutil.cpu_count(logical=True) > 1 else 1
 # Asegurarse de que el número de núcleos no sea menos de 1
 num_cores = max(1, num_cores)
 
