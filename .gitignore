@@ -20,6 +20,10 @@ venv.bak/
 # VS Code
 .vscode/
 
+# dev container
+.devcontainer/
+
+
 # PyCharm
 .idea/
 
