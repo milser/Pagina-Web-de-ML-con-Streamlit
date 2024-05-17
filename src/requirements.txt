@@ -24,3 +24,4 @@ scipy.sparse
 py7zr
 joblib
 psutil
+pathlib
